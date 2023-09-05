@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calulater</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .calculator {
+            width: 300px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #f2f2f2;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 2px #aaa;
+        }
+        .display {
+            width: 100%;
+            height: 50px;
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: right;
+            padding: 5px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            
+        }
+        button {
+            width: 100%;
+            height: 50px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="performOperation('+')">+</button>
+            <button onclick="performOperation('-')">-</button>
+            <button onclick="performOperation('*')">*</button>
+            <button onclick="performOperation('/')">/</button>
+            <button onclick="calculateResult()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let currentDisplay = "0";
+        let currentOperator = "";
+        let previousValue = "";
+
+        function appendToDisplay(value) {
+            if (currentDisplay === "0" && value !== ".") {
+                currentDisplay = value;
+            } else {
+                currentDisplay += value;
+            }
+            document.getElementById("display").textContent = currentDisplay;
+        }
+
+        function clearDisplay() {
+            currentDisplay = "0";
+            currentOperator = "";
+            previousValue = "";
+            document.getElementById("display").textContent = currentDisplay;
+        }
+
+        function performOperation(operator) {
+            if (previousValue === "") {
+                previousValue = currentDisplay;
+                currentDisplay = "0";
+                currentOperator = operator;
+            } else {
+                calculateResult();
+                currentOperator = operator;
+            }
+        }
+
+        function calculateResult() {
+            if (currentOperator === "+") {
+                currentDisplay = (parseFloat(previousValue) + parseFloat(currentDisplay)).toString();
+            } else if (currentOperator === "-") {
+                currentDisplay = (parseFloat(previousValue) - parseFloat(currentDisplay)).toString();
+            } else if (currentOperator === "*") {
+                currentDisplay = (parseFloat(previousValue) * parseFloat(currentDisplay)).toString();
+            } else if (currentOperator === "/") {
+                if (currentDisplay === "0") {
+                    currentDisplay = "Error";
+                } else {
+                    currentDisplay = (parseFloat(previousValue) / parseFloat(currentDisplay)).toString();
+                }
+            }
+            currentOperator = "";
+            previousValue = "";
+            document.getElementById("display").textContent = currentDisplay;
+        }
+    </script>
+</body>
+</html>
